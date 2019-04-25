@@ -1,0 +1,34 @@
+.tweet(data-tweetId = tweet._id)
+  .row
+    .col-1
+      img(class='tweet__image', src=tweet.user.avatar_url)
+    .col-11.tweet__description
+      span.tweet__username-date
+        span.tweet__username
+          -var name = tweet.user.email
+          a(href="/users/"+tweet.user._id) #{name}
+        span.tweet__date
+          a(data-toggle='modal', href="#tweet-modal-"+tweet._id)  • #{formatDate(tweet.createdAt, "%b %d, %Y at %I:%M %p")}
+      p.tweet__content= tweet.body
+      if (tweet.user._id != req.user.id)
+        - if(tweet.favorites == req.user.id || tweet.favorites.includes(req.user.id))
+          a.unfavorite(href="#", data-tweetId = tweet._id)
+            i(class="fas fa-star", aria-hidden="true") &nbsp; 
+        - else
+          a.favorite(href="#", data-tweetId = tweet._id) 
+            i(class="far fa-star", aria-hidden="true") &nbsp;
+        span #{tweet.favoritesCount} &nbsp;
+        - if(tweet.retweets == req.user.id || tweet.retweets.includes(req.user.id))
+          a.unretweet(href="#", data-tweetId = tweet._id)
+            i(class="fas fa-retweet", aria-hidden="true") &nbsp; 
+        - else
+          a.retweet(href="#", data-tweetId = tweet._id) 
+            i(class="fas fa-retweet", aria-hidden="true") &nbsp;
+        span #{tweet.retweetsCount} &nbsp;
+
+      if (tweet.user._id == req.user.id)
+        form.d-inline-block.tweet__form(action="/tweets/"+tweet.id+"?_method=DELETE", method="post")
+          a.btn.tweet__edit(href="/tweets/"+tweet._id) Edit
+          button.btn.tweet__delete(type="submit") Delete
+          span &nbsp; &nbsp;
+    include comments

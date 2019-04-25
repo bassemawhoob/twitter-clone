@@ -1,0 +1,43 @@
+body
+  header.navbar(role='banner')
+    .container
+      if (req.isAuthenticated())
+        .navbar__group.navbar__group_left
+          ul.navbar__main-navigation
+            li
+              a(href="/" title="Home")
+                i(class="fas fa-home", aria-hidden="true")
+                span Home
+            |
+            li
+              a(href="/users/"+req.user.id, title="Profile")
+                i(class="fas fa-user", aria-hidden="true")
+                span Profile
+            |
+            li
+              a(href='/chat/get/' + req.user._id, title="Inbox")
+                i(class="far fa-envelope", aria-hidden="true")
+                span Inbox
+            li
+              a(href="/chat/", title="Chat")
+                i(class="far fa-comments", aria-hidden="true")
+                span Users & chat
+            li
+              a(href="/trending/", title="Trending")
+                i(class="fas fa-fire", aria-hidden="true")
+                span Trending
+      span.navbar__logo
+        a(href='/')
+          img(src='/img/bird.svg')
+      if (req.isAuthenticated())
+        .navbar__group.navbar__group_right
+          .navbar__new-tweet
+            a.navbar__new-tweet-button.btn(data-toggle='modal', href='.new-tweet')
+              span Tweet
+          .navbar__profile
+            img(class='tweet__image chat-image logout-image', src=req.user.avatar_url)
+            span.text-white= req.user.email
+            a(href="/logout", title="logout", class="navbar__profile-logout") &nbsp;
+              span Logout
+  if (req.isAuthenticated())
+    include ../components/modals/new-tweet-modal

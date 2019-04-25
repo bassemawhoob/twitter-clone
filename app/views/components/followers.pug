@@ -1,0 +1,6 @@
+.col-lg-4
+  .follower
+    img(class="follower__image", src=user.avatar_url)
+    div.follower__user-info
+      span.follower__handle
+          a(href="/users/" + user._id) #{user.email}
