@@ -15,6 +15,7 @@ const cookieParser = require("cookie-parser");
 const Raven = require("raven");
 const moment = require("moment");
 const morgan = require("morgan");
+const expressSanitizer = require("express-sanitizer");
 
 module.exports = (app, config, passport) => {
   app.set("showStackError", true);
@@ -72,6 +73,7 @@ module.exports = (app, config, passport) => {
     })
   );
   app.use(bodyParser.json());
+  app.use(expressSanitizer());
   app.use(methodOverride("_method"));
   app.use(
     session({

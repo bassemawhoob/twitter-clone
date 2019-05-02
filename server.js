@@ -7,6 +7,7 @@ const auth = require("./config/middlewares/authorization");
 const mongoose = require("mongoose");
 const app = express();
 const port = process.env.PORT || 3000;
+const https = require("https");
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.db, {
@@ -24,6 +25,17 @@ require("./config/passport")(passport, config);
 require("./config/express")(app, config, passport);
 require("./config/routes")(app, passport, auth);
 
-app.listen(port);
+// app.listen(port);
+// // we will pass our 'app' to 'https' server
+https
+  .createServer(
+    {
+      key: fs.readFileSync("./key.pem"),
+      cert: fs.readFileSync("./cert.pem"),
+      passphrase: "VerySecure"
+    },
+    app
+  )
+  .listen(3000);
 console.log("Express app started on port " + port);
 module.exports = app;

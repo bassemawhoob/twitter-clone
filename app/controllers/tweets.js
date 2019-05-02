@@ -23,6 +23,8 @@ exports.tweet = (req, res, next, id) => {
 // ### Create a Tweet
 exports.create = (req, res) => {
   const tweet = new Tweet(req.body);
+  tweet.body = req.sanitize(tweet.body);
+
   tweet.user = req.user;
   tweet.uploadAndSave({}, err => {
     if (err) {
